@@ -1,5 +1,6 @@
 package practise_problems;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class Questions {
@@ -7,8 +8,8 @@ public class Questions {
     public static void main(String[] args) {
 
         Questions questions = new Questions();
-        questions.set1();
-
+//        questions.set1();
+        questions.set2();
     }
 
     public void set1() {
@@ -114,5 +115,124 @@ public class Questions {
                 .map(String::toUpperCase)
                 .toList();
         System.out.println(wordsStartingWithA);
+    }
+
+    public void set2() {
+
+        // 1.Sorted by Age (Ascending): Get a list of all people sorted by age in ascending order
+        List<Person> sortedByAgeAsc = DataProvider.getPeople()
+                .stream()
+                .sorted(Comparator.comparingInt(Person::getAge))
+                .toList();
+        System.out.println("Sorted by Age Ascending: " + sortedByAgeAsc);
+
+        // 2.Sorted by Salary (Descending): Get a list of all people sorted by salary in descending order
+        List<Person> sortedBySalaryDesc = DataProvider.getPeople()
+                .stream()
+                .sorted(Comparator.comparingDouble(Person::getSalary).reversed())
+                .toList();
+        System.out.println("Sorted by Salary Descending: " + sortedBySalaryDesc);
+
+        // 3.Sorted by City then Name: Get a list of people sorted first by city (ascending), then by name (ascending).
+        List<Person> sortedByCityThenName =  DataProvider.getPeople()
+                .stream()
+                .sorted(Comparator.comparing(Person::getCity).thenComparing(Person::getName))
+                .toList();
+        System.out.println("Sorted by City then Name: " + sortedByCityThenName);
+
+        // 4.Find the Youngest Person: Find the person with the minimum age. Handle the Optional.
+        DataProvider.getPeople()
+                .stream()
+                .min(Comparator.comparingInt(Person::getAge))
+                .ifPresent(person -> System.out.println("Youngest Person: " + person));
+
+        // 5.Find the Highest Earner: Find the person with the maximum salary. Handle the Optional.
+        DataProvider.getPeople()
+                .stream()
+                .max(Comparator.comparingDouble(Person::getSalary))
+                .ifPresent(person -> System.out.println("Highest Salary Person: " + person));
+
+        // 6.Check All Match (Age): Check if all people are older than 20.
+        boolean allOlderThan20 = DataProvider.getPeople()
+                .stream()
+                .allMatch(person -> person.getAge() > 20);
+        System.out.println("All older than 20: " + allOlderThan20);
+
+        // 7.Check Any Match (Occupation): Check if any person is an "Artist".
+        boolean anyArtist =  DataProvider.getPeople()
+                .stream()
+                .anyMatch(person -> person.getOccupation().equalsIgnoreCase("Artist"));
+        System.out.println("Any Artist: " + anyArtist);
+
+        // 8.Check None Match (City): Check if none of the people live in "Dallas".
+        boolean noneInDallas =  DataProvider.getPeople()
+                .stream()
+                .noneMatch(person -> person.getCity().equalsIgnoreCase("Dallas"));
+        System.out.println("None in Dallas: " + noneInDallas);
+
+        // 9.peek() for Debugging: Print the name of each person as they are processed, then collect them into a list. (Use peek() for this intermediate print).
+        List<Person> peopleWithDebug =  DataProvider.getPeople()
+                .stream()
+                .peek(person -> System.out.println("Processing: " + person.getName()))
+                .toList();
+        System.out.println("People with Debug: " + peopleWithDebug);
+
+        // 10.Find First Engineer: Find the first person whose occupation is "Engineer". Handle the Optional.
+        DataProvider.getPeople()
+                .stream()
+                .filter(person -> person.getOccupation().equalsIgnoreCase("Engineer"))
+                .findFirst()
+                .ifPresent(person -> System.out.println("Found Engineer: " + person));
+
+        // 11.Sorted by Category then Price: Get a list of products sorted first by category, then by price (both ascending).
+        List<Product> sortedByCategoryThenPrice = DataProvider.getProducts()
+                .stream()
+                .sorted(Comparator.comparing(Product::getCategory).thenComparingDouble(Product::getPrice))
+                .toList();
+        System.out.println("Sorted by Category then Price: " + sortedByCategoryThenPrice);
+
+        // 12.Check Any Match (Quantity): Check if any product has a quantity less than 5.
+        boolean anyProductLowQuantity = DataProvider.getProducts()
+                .stream()
+                .anyMatch(product -> product.getQuantity() < 5);
+        System.out.println("Any product with low quantity: " + anyProductLowQuantity);
+
+        // 13.peek() for price check: Print the price of each "Apparel" product as it's processed, then collect them into a list.
+        List<Product> apparelProductsWithDebug =  DataProvider.getProducts()
+                .stream()
+                .filter(product -> product.getCategory().equalsIgnoreCase("Apparel"))
+                .peek(product -> System.out.println("Price: " + product.getPrice()))
+                .toList();
+
+        // 14.peek() for price check: Print the price of each "Apparel" product as it's processed, then collect them into a list.
+        List<Product> apparelProducts = DataProvider.getProducts()
+                .stream()
+                .filter(product -> product.getCategory().equalsIgnoreCase("Apparel"))
+                .peek(product -> System.out.println("Price: " + product.getPrice()))
+                .toList();
+        System.out.println("Apparel Products with Debug: " + apparelProductsWithDebug);
+
+        // 15.flatMap() to Flatten: Flatten the listOfLists into a single stream of integers.
+        List<Integer> flattenedList = DataProvider.getListOfLists()
+                .stream()
+                .flatMap(List::stream)
+                .toList();
+        System.out.println("Flattened List: " + flattenedList);
+
+        // 16.flatMap() and Sum: Flatten the listOfLists into a single stream of integers and then calculate their sum.
+        int sumOfFlattenedList = DataProvider.getListOfLists()
+                .stream()
+                .flatMap(List::stream)
+                .mapToInt(Integer::intValue)
+                .sum();
+        System.out.println("Sum of Flattened List: " + sumOfFlattenedList);
+
+        // 17.flatMap() and Distinct: Flatten the listOfLists into a single stream, then find all distinct numbers.
+        List<Integer> distinctNumbers = DataProvider.getListOfLists()
+                .stream()
+                .flatMap(List::stream)
+                .distinct()
+                .toList();
+        System.out.println("Distinct Numbers: " + distinctNumbers);
     }
 }
