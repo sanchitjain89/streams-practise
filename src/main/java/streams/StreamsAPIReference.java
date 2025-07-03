@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 /**
  * Comprehensive Java Streams API Reference
  * Covers: Core Concepts, Stream Creation, Intermediate Operations, Terminal Operations
+ * Java 16+: Stream.toList() is available from Java 16 onwards. For earlier versions, use Collectors.toList().
  */
 public class StreamsAPIReference {
 
@@ -26,14 +27,6 @@ public class StreamsAPIReference {
         private int age;
         private String city;
         private String department;
-
-        // Constructor for Person with city (department will be null)
-        public Person(String name, int age, String city) {
-            this.name = name;
-            this.age = age;
-            this.city = city;
-            this.department = null;
-        }
 
         @Override
         public String toString() {
@@ -125,7 +118,7 @@ public class StreamsAPIReference {
         // Functional approach - original unchanged
         List<String> upperNames = names.stream()
                 .map(String::toUpperCase)
-                .collect(Collectors.toList());
+                .toList();
         System.out.println("After stream processing - Original: " + names);
         System.out.println("New list: " + upperNames);
 
@@ -141,7 +134,7 @@ public class StreamsAPIReference {
                     return name.toUpperCase();
                 });
         System.out.println("Stream created, no operations executed yet...");
-        List<String> result = lazyStream.collect(Collectors.toList());
+        List<String> result = lazyStream.toList();
         System.out.println("Result: " + result);
 
         // Different ways to create streams
@@ -162,17 +155,17 @@ public class StreamsAPIReference {
         // Infinite streams (limited for demo)
         List<Double> randomNumbers = Stream.generate(Math::random)
                 .limit(5)
-                .collect(Collectors.toList());
+                .toList();
         System.out.println("5 Random numbers: " + randomNumbers);
 
         List<Integer> evenNumbers = Stream.iterate(0, n -> n + 2)
                 .limit(10)
-                .collect(Collectors.toList());
+                .toList();
         System.out.println("First 10 even numbers: " + evenNumbers);
 
         // Primitive streams
         IntStream intRange = IntStream.rangeClosed(1, 5);
-        System.out.println("Int range 1-5: " + intRange.boxed().collect(Collectors.toList()));
+        System.out.println("Int range 1-5: " + intRange.boxed().toList());
 
         System.out.println();
     }
@@ -186,29 +179,29 @@ public class StreamsAPIReference {
         System.out.println("FILTER Examples:");
         List<Integer> evenNums = numbers.stream()
                 .filter(n -> n % 2 == 0)
-                .collect(Collectors.toList());
+                .toList();
         System.out.println("Even numbers: " + evenNums);
 
         List<String> longWords = words.stream()
                 .filter(word -> word.length() > 5)
-                .collect(Collectors.toList());
+                .toList();
         System.out.println("Long words (>5 chars): " + longWords);
 
         // Map
         System.out.println("\nMAP Examples:");
         List<String> upperWords = words.stream()
                 .map(String::toUpperCase)
-                .collect(Collectors.toList());
+                .toList();
         System.out.println("Uppercase words: " + upperWords);
 
         List<Integer> wordLengths = words.stream()
                 .map(String::length)
-                .collect(Collectors.toList());
+                .toList();
         System.out.println("Word lengths: " + wordLengths);
 
         List<Integer> squares = numbers.stream()
                 .map(n -> n * n)
-                .collect(Collectors.toList());
+                .toList();
         System.out.println("Squares: " + squares);
 
         // FlatMap
@@ -221,30 +214,30 @@ public class StreamsAPIReference {
 
         List<String> flattened = listOfLists.stream()
                 .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+                .toList();
         System.out.println("Flattened lists: " + flattened);
 
         List<String> sentences = Arrays.asList("Hello world", "Java streams", "are powerful");
         List<String> allWords = sentences.stream()
                 .flatMap(sentence -> Arrays.stream(sentence.split(" ")))
-                .collect(Collectors.toList());
+                .toList();
         System.out.println("All words from sentences: " + allWords);
 
         // Sorted
         System.out.println("\nSORTED Examples:");
         List<String> sortedWords = words.stream()
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
         System.out.println("Sorted words: " + sortedWords);
 
         List<String> sortedByLength = words.stream()
                 .sorted(Comparator.comparing(String::length))
-                .collect(Collectors.toList());
+                .toList();
         System.out.println("Sorted by length: " + sortedByLength);
 
         List<Person> sortedPeople = people.stream()
                 .sorted(Comparator.comparing(Person::getAge))
-                .collect(Collectors.toList());
+                .toList();
         System.out.println("People sorted by age: " + sortedPeople);
 
         // Distinct
@@ -252,25 +245,25 @@ public class StreamsAPIReference {
         List<Integer> numbersWithDups = Arrays.asList(1, 2, 2, 3, 3, 3, 4, 5, 5);
         List<Integer> uniqueNumbers = numbersWithDups.stream()
                 .distinct()
-                .collect(Collectors.toList());
+                .toList();
         System.out.println("Unique numbers: " + uniqueNumbers);
 
         // Limit and Skip
         System.out.println("\nLIMIT & SKIP Examples:");
         List<Integer> first5 = numbers.stream()
                 .limit(5)
-                .collect(Collectors.toList());
+                .toList();
         System.out.println("First 5 numbers: " + first5);
 
         List<Integer> skip3 = numbers.stream()
                 .skip(3)
-                .collect(Collectors.toList());
+                .toList();
         System.out.println("Skip first 3: " + skip3);
 
         List<Integer> pagination = numbers.stream()
                 .skip(3)
                 .limit(4)
-                .collect(Collectors.toList());
+                .toList();
         System.out.println("Skip 3, take 4: " + pagination);
 
         // Peek (for debugging)
@@ -280,7 +273,7 @@ public class StreamsAPIReference {
                 .filter(word -> word.length() > 5)
                 .peek(word -> System.out.println("  After filter: " + word))
                 .map(String::toUpperCase)
-                .collect(Collectors.toList());
+                .toList();
         System.out.println("Final result: " + debugResult);
 
         // Chaining operations
@@ -290,7 +283,7 @@ public class StreamsAPIReference {
                 .map(String::toUpperCase)
                 .sorted()
                 .limit(3)
-                .collect(Collectors.toList());
+                .toList();
         System.out.println("Complex chain result: " + complexResult);
 
         System.out.println();
@@ -307,7 +300,7 @@ public class StreamsAPIReference {
         // Collect to different types
         List<String> wordList = words.stream()
                 .filter(word -> word.length() > 4)
-                .collect(Collectors.toList());
+                .toList();
         System.out.println("Filtered to List: " + wordList);
 
         Set<String> wordSet = words.stream()
@@ -500,7 +493,7 @@ public class StreamsAPIReference {
         List<Product> expensiveProducts = products.stream()
                 .filter(product -> product.getPrice() > 100)
                 .sorted(Comparator.comparing(Product::getPrice).reversed())
-                .collect(Collectors.toList());
+                .toList();
         System.out.println("Expensive products (>$100): " + expensiveProducts);
 
         // Order processing example with proper LocalDate values
@@ -535,7 +528,7 @@ public class StreamsAPIReference {
                 .flatMap(order -> order.getItems().stream())
                 .distinct()
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
         System.out.println("All items from completed orders: " + allItems);
 
         // Orders by month
@@ -557,7 +550,7 @@ public class StreamsAPIReference {
         List<String> validEmails = emails.stream()
                 .filter(email -> email.contains("@") && email.contains("."))
                 .filter(email -> !email.endsWith("@"))
-                .collect(Collectors.toList());
+                .toList();
         System.out.println("Valid emails: " + validEmails);
 
         boolean allEmailsValid = emails.stream()
@@ -569,7 +562,7 @@ public class StreamsAPIReference {
 
         List<Integer> largeList = Stream.iterate(1, n -> n + 1)
                 .limit(1000000)
-                .collect(Collectors.toList());
+                .toList();
 
         // Sequential processing
         long startTime = System.currentTimeMillis();
@@ -605,7 +598,7 @@ public class StreamsAPIReference {
         List<String> names = Arrays.asList("Alice", "Bob", "Charlie");
         List<String> transformed = names.stream()
                 .map(combined)
-                .collect(Collectors.toList());
+                .toList();
         System.out.println("Transformed names: " + transformed);
 
         // Clean up example with multiple UnaryOperators
@@ -622,7 +615,7 @@ public class StreamsAPIReference {
         List<String> dirtyData = Arrays.asList("  Hello@#$   World!!!   ", "Java***Streams   ", "  Clean##Data  ");
         List<String> cleanData = dirtyData.stream()
                 .map(dataCleanup)
-                .collect(Collectors.toList());
+                .toList();
         System.out.println("Cleaned data: " + cleanData);
 
         System.out.println("\n=== END OF STREAMS API REFERENCE ===");
