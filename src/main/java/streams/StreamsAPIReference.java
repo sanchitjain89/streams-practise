@@ -5,6 +5,8 @@ import lombok.Getter;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -327,9 +329,28 @@ public class StreamsAPIReference {
         System.out.println("\nREDUCTION Operations:");
 
         // reduce
+        BinaryOperator<Integer> sumFunction = (a, b) -> a + b;
         Optional<Integer> sum = numbers.stream()
                 .reduce((a, b) -> a + b);
         System.out.println("Sum using reduce: " + sum.orElse(0));
+
+        Optional<Integer> sumUsingSumFunction = numbers.stream()
+                .reduce(sumFunction);
+        System.out.println("Sum using custom function: " + sumUsingSumFunction.orElse(0));
+
+        // Use reduce to find sum when stream has only 1 element
+        // This will return an empty Optional if the stream is empty
+
+        List<Integer> singleElementList = Collections.singletonList(42);
+        Optional<Integer> singleElementSum = singleElementList.stream()
+                .reduce(sumFunction);
+        System.out.println("Sum of single element list: " + singleElementSum.orElse(0));
+
+        // Count total characters in a list of strings
+        List<String> list = List.of("hi", "there", "java");
+        int totalCharacters = list.stream().mapToInt(String::length).sum();
+        System.out.println("Total characters in list: " + totalCharacters);
+
 
         Integer sumWithIdentity = numbers.stream()
                 .reduce(0, Integer::sum);
@@ -577,7 +598,7 @@ public class StreamsAPIReference {
         UnaryOperator<String> addSuffix = s -> s + "!";
         UnaryOperator<String> toUpper = String::toUpperCase;
 
-        UnaryOperator<String> combined = (UnaryOperator<String>) addPrefix
+        Function<String, String> combined = addPrefix
                 .andThen(addSuffix)
                 .andThen(toUpper);
 
@@ -593,7 +614,7 @@ public class StreamsAPIReference {
         UnaryOperator<String> normalizeSpaces = s -> s.replaceAll("\\s+", " ");
         UnaryOperator<String> toLowerCase = String::toLowerCase;
 
-        UnaryOperator<String> dataCleanup = (UnaryOperator<String>) trim
+        Function<String, String> dataCleanup = trim
                 .andThen(removeSpecialChars)
                 .andThen(normalizeSpaces)
                 .andThen(toLowerCase);
