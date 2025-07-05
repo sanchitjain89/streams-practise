@@ -1,4 +1,4 @@
-package Collectors;
+package collectors_practise;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -15,8 +15,8 @@ public class Questions {
 //        questions.groupByQuestions(data);
 //        questions.partitionByQuestions(data);
 //        questions.summaryStatsQuestions(data);
-//        questions.countingQuestions(data);
-        questions.joiningQuestions(data);
+        questions.countingQuestions(data);
+//        questions.joiningQuestions(data);
     }
 
     private void runBeginnerQuestions(Data data) {
@@ -109,45 +109,56 @@ public class Questions {
 
     private void groupByQuestions(Data data){
         //Group people by age.
+        System.out.println("1. Group people by age.");
         Map<Integer, List<Person>> peopleByAge = data.getPeople().stream().collect(Collectors.groupingBy(Person::getAge));
+        System.out.println(peopleByAge);
 
         //Group employees by department.
+        System.out.println("2. Group employees by department.");
         Map<String, List<Employee>> employeesByDepartment = data.getEmployees().stream().collect(Collectors.groupingBy(Employee::getDepartment));
         System.out.println(employeesByDepartment);
 
         //Group fruits by their length.
+        System.out.println("3. Group fruits by their length.");
         Map<Integer, List<String>> fruitsByLength = data.getFruits().stream().collect(Collectors.groupingBy(String::length));
         System.out.println(fruitsByLength);
 
         // Intermediate
 
         // 4.Count how many people are in each age group.
+        System.out.println("4. Count how many people are in each age group.");
         Map<Integer, Long> peopleCountByAge = data.getPeople().stream().collect(Collectors.groupingBy(Person::getAge, Collectors.counting()));
         System.out.println(peopleCountByAge);
 
         // 5.Get a map of department → average salary.
+        System.out.println("5. Get a map of department → average salary.");
         Map<String, Double> departmentAverageSalary = data.getEmployees().stream().collect(Collectors.groupingBy(Employee::getDepartment, Collectors.averagingDouble(Employee::getSalary)));
         System.out.println(departmentAverageSalary);
 
         // 6.Group employees by department and collect their names as a list.
+        System.out.println("6. Group employees by department and collect their names as a list.");
         Map<String, List<String>> employeeNamesByDepartment = data.getEmployees().stream().collect(Collectors.groupingBy(Employee::getDepartment, Collectors.mapping(Employee::getName, Collectors.toList())));
         System.out.println(employeeNamesByDepartment);
 
         // 7.Group employees by department and collect names into a comma-separated string.
+        System.out.println("7. Group employees by department and collect names into a comma-separated string.");
         Map<String, String> employeeNamesByDepartmentString = data.getEmployees().stream().collect(Collectors.groupingBy(Employee::getDepartment, Collectors.mapping(Employee::getName, Collectors.joining(", "))));
         System.out.println(employeeNamesByDepartmentString);
 
         // Advanced
 
         // 8.Group employees by department using a TreeMap
+        System.out.println("8. Group employees by department using a TreeMap.");
         Map<String, List<Employee>> employeesByDepartmentTreeMap = data.getEmployees().stream().collect(Collectors.groupingBy(Employee::getDepartment, TreeMap::new, Collectors.toList()));
         System.out.println(employeesByDepartmentTreeMap);
 
         // 9.Group people by age and collect the names into a Set.
+        System.out.println("9. Group people by age and collect the names into a Set.");
         Map<Integer, Set<String>> peopleNamesByAgeSet = data.getPeople().stream().collect(Collectors.groupingBy(Person::getAge, Collectors.mapping(Person::getName, Collectors.toSet())));
         System.out.println(peopleNamesByAgeSet);
 
         // 10.Group numbers by even/odd, and count the number of occurrences in each group.
+        System.out.println("10. Group numbers by even/odd, and count the number of occurrences in each group.");
         //Using partitioningBy
 //        Map<Boolean, Long> evenOddCount = data.getNumbers().stream().collect(Collectors.partitioningBy(n -> n % 2 == 0, Collectors.counting()));
 
@@ -156,6 +167,7 @@ public class Questions {
         System.out.println(evenOddCount);
 
         // 11.Group people by age, and for each group, find the person with the max name length.
+        System.out.println("11. Group people by age, and for each group, find the person with the max name length.");
         Map<Integer, Person> personWithLongestNameByAge = data.getPeople().stream()
                 .collect(Collectors.groupingBy(
                         Person::getAge,
@@ -169,6 +181,7 @@ public class Questions {
 
 
         // 12.Group employees by department and get the total salary per department.
+        System.out.println("12. Group employees by department and get the total salary per department.");
         // Using Collectors.summingInt
         Map<String, Double> totalSalaryByDepartment = data.getEmployees().stream()
                 .collect(Collectors.groupingBy(Employee::getDepartment, Collectors.summingDouble(Employee::getSalary)));
@@ -177,42 +190,53 @@ public class Questions {
 
     private void partitionByQuestions(Data data){
         // 1.Partition numbers into even and odd groups.
+        System.out.println("1. Partition numbers into even and odd groups.");
         Map<Boolean, List<Integer>> partitionedNumbers = data.getNumbers().stream().collect(Collectors.partitioningBy(n -> n%2 == 0));
         System.out.println(partitionedNumbers);
 
         //2.Partition a list of strings into those longer than 5 characters and the rest.
+        System.out.println("2. Partition a list of strings into those longer than 5 characters and the rest.");
         Map<Boolean, List<String>> partitionedFruits =
                 data.getFruits().stream().collect(Collectors.partitioningBy(fruit -> fruit.length() > 5));
         System.out.println(partitionedFruits);
 
         //3.Partition people into adults (age ≥ 18) and minors.
+        System.out.println("3. Partition people into adults (age ≥ 18) and minors.");
         Map<Boolean, List<Person>> partitionedPeople = data.getPeople().stream().collect(Collectors.partitioningBy(person -> person.getAge() >= 18));
         System.out.println(partitionedPeople);
 
         //4.Partition people into adults (age ≥ 18) and minors.
+        System.out.println("4. Partition people by whether their name starts with \"A\".");
         Map<Boolean, List<Person>> partitionedPeopleByName = data.getPeople().stream().collect(Collectors.partitioningBy(person -> person.getName().startsWith("A")));
         System.out.println(partitionedPeopleByName);
 
         //5.Partition numbers into even/odd and count how many are in each group.
+        System.out.println("5. Partition numbers into even/odd and count how many are in each group.");
         Map<Boolean, Long> partitionedCount = data.getNumbers().stream().collect(Collectors.partitioningBy(n -> n%2 == 0, Collectors.counting()));
+        System.out.println(partitionedCount);
 
         //6.Partition employees into high-salary (≥100k) vs others, and collect names in each group.
+        System.out.println("6. Partition employees into high-salary (≥60k) vs others, and collect names in each group.");
         Map<Boolean, List<String>> partitionedEmployees = data.getEmployees().stream().collect(Collectors.partitioningBy(employee -> employee.getSalary() > 60000, Collectors.mapping(Employee::getName, Collectors.toList())));
         System.out.println(partitionedEmployees);
 
         //7.Partition people into adults/minors and collect the average age of each group.
+        System.out.println("7. Partition people into adults/minors and collect the average age of each group.");
         Map<Boolean, Double> averageAgeByPartition = data.getPeople().stream().collect(Collectors.partitioningBy(person -> person.getAge() >= 18, Collectors.averagingInt(Person::getAge)));
         System.out.println(averageAgeByPartition);
 
 
         //8.Partition people into those who live in "Delhi" and those who don't; for each group, get a list of names sorted alphabetically.
-        Map<Boolean, List<String>> partitionedPeopleByCity = data.getPeople().stream().collect(Collectors.partitioningBy(person -> person.getCity().equalsIgnoreCase("DELHI"), Collectors.collectingAndThen(
-                Collectors.mapping(
-                        Person::getName,
-                        Collectors.toCollection(TreeSet::new)
-                ),
-                ArrayList::new
-        )));
+        System.out.println("8. Partition people into those who live in \"Delhi\" and those who don't; for each group, get a list of names sorted alphabetically.");
+        Map<Boolean, List<String>> partitionedPeopleByCity = data.getPeople().stream()
+                .collect(Collectors.partitioningBy(
+                        person -> person.getCity().equalsIgnoreCase("DELHI"),
+                        Collectors.collectingAndThen(Collectors.mapping(
+                                        Person::getName,
+                                        Collectors.toCollection(TreeSet::new)
+                                ),
+                                ArrayList::new
+                        )));
         System.out.println(partitionedPeopleByCity);
 
     }
@@ -284,6 +308,8 @@ public class Questions {
 
         // 4.Count total number of employees.
         long totalEmployees = data.getEmployees().stream().collect(Collectors.counting());
+        // Alternative way using count()
+        // long totalEmployees = data.getEmployees().stream().count();
         System.out.println("Total Employees: " + totalEmployees);
 
         // 5.Count the number of employees with a salary greater than 60,000, by department.
@@ -292,11 +318,13 @@ public class Questions {
         System.out.println("Employees with Salary > 60,000: " + highSalaryCountByDepartment);
 
         // 6.Find the department with the most employees.
+        // Come back to this later
         Map.Entry<String, Long> departmentWithMostEmployees = data.getEmployees().stream()
                 .collect(Collectors.groupingBy(Employee::getDepartment, Collectors.counting()))
                 .entrySet().stream()
                 .max(Map.Entry.comparingByValue())
                 .orElse(null);
+        System.out.println("Department with Most Employees: " + departmentWithMostEmployees);
     }
 
     private void joiningQuestions(Data data){
