@@ -20,29 +20,14 @@ public class Questions {
 
     private void runBeginnerQuestions(Data data) {
         System.out.println("Question 1: Convert a list of strings to a comma-separated string");
-        convertListToCommaSeparatedString(data.getFruits());
-
-        System.out.println("\nQuestion 2: Group Person objects by age");
-        groupPersonsByAge(data.getPeople());
+        System.out.println(String.join(", ", data.getFruits()));
+        System.out.println(data.getFruits().stream().collect(Collectors.joining(", ", "[", "]")));
 
         System.out.println("\nQuestion 3: Remove duplicates from a list of integers");
         removeDuplicates(data.getNumbers());
 
         System.out.println("\nQuestion 4: Find the sum of all integers in a list");
         sumOfIntegers(data.getNumbers());
-
-        System.out.println("\nQuestion 5: Partition numbers into even and odd groups");
-        partitionNumbersByParity(data.getNumbers());
-    }
-
-    private void convertListToCommaSeparatedString(List<String> fruits) {
-        System.out.println(String.join(", ", fruits));
-        System.out.println(fruits.stream().collect(Collectors.joining(", ", "[", "]")));
-    }
-
-    private void groupPersonsByAge(List<Person> people) {
-        Map<Integer, List<Person>> groupedByAge = people.stream().collect(Collectors.groupingBy(Person::getAge));
-        System.out.println(groupedByAge);
     }
 
     private void removeDuplicates(List<Integer> numbers) {
@@ -60,16 +45,10 @@ public class Questions {
         System.out.println(sum);
     }
 
-    private void partitionNumbersByParity(List<Integer> numbers) {
-        Map<Boolean, List<Integer>> partitioned = numbers.stream().collect(Collectors.partitioningBy(number -> number % 2 == 0));
-        System.out.println(partitioned);
-    }
 
     private void groupByPlayground(Data data){
-
         Map<Integer, Long> collect = data.getPeople().stream().collect(Collectors.groupingBy(Person::getAge, Collectors.counting()));
         System.out.println(collect);
-
     }
 
     private void groupByQuestions(Data data){
