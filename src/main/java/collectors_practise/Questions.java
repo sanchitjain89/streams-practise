@@ -10,7 +10,6 @@ public class Questions {
         Data data = new Data();
 
 //        questions.runBeginnerQuestions(data);
-//        questions.runIntermediateQuestions(data);
 //        questions.groupByPlayground(data);
 //        questions.groupByQuestions(data);
 //        questions.partitionByQuestions(data);
@@ -34,14 +33,6 @@ public class Questions {
 
         System.out.println("\nQuestion 5: Partition numbers into even and odd groups");
         partitionNumbersByParity(data.getNumbers());
-    }
-
-    private void runIntermediateQuestions(Data data) {
-        System.out.println("\nIntermediate Question 1: Calculate average salary by department");
-        averageSalaryByDepartment(data.getEmployees());
-
-        System.out.println("\nIntermediate Question 2: Group names by age");
-        groupNamesByAge(data.getPeople());
     }
 
     private void convertListToCommaSeparatedString(List<String> fruits) {
@@ -74,32 +65,6 @@ public class Questions {
         System.out.println(partitioned);
     }
 
-    private void averageSalaryByDepartment(List<Employee> employees) {
-        Map<String, Double> averageSalary = employees.stream()
-                .collect(Collectors.groupingBy(Employee::getDepartment, Collectors.averagingDouble(Employee::getSalary)));
-        System.out.println(averageSalary);
-    }
-
-    private void groupNamesByAge(List<Person> people) {
-        System.out.println("Original list: " + people);
-
-        // Group by age, but collect only the names instead of Person objects
-        Map<Integer, List<String>> namesByAge = people.stream()
-                .collect(Collectors.groupingBy(
-                        Person::getAge,
-                        Collectors.mapping(Person::getName, Collectors.toList())
-                ));
-        System.out.println("\nNames grouped by age: " + namesByAge);
-
-        // Group by age and join names in each group
-        Map<Integer, String> joinedNamesByAge = people.stream()
-                .collect(Collectors.groupingBy(
-                        Person::getAge,
-                        Collectors.mapping(Person::getName, Collectors.joining(", "))
-                ));
-        System.out.println("\nJoined names by age: " + joinedNamesByAge);
-    }
-
     private void groupByPlayground(Data data){
 
         Map<Integer, Long> collect = data.getPeople().stream().collect(Collectors.groupingBy(Person::getAge, Collectors.counting()));
@@ -122,6 +87,25 @@ public class Questions {
         System.out.println("3. Group fruits by their length.");
         Map<Integer, List<String>> fruitsByLength = data.getFruits().stream().collect(Collectors.groupingBy(String::length));
         System.out.println(fruitsByLength);
+
+        System.out.println("\n4: Group names by age");
+        System.out.println("Original list: " + data.getPeople());
+
+        // Group by age, but collect only the names instead of Person objects
+        Map<Integer, List<String>> namesByAge = data.getPeople().stream()
+                .collect(Collectors.groupingBy(
+                        Person::getAge,
+                        Collectors.mapping(Person::getName, Collectors.toList())
+                ));
+        System.out.println("\nNames grouped by age: " + namesByAge);
+
+        // Group by age and join names in each group
+        Map<Integer, String> joinedNamesByAge = data.getPeople().stream()
+                .collect(Collectors.groupingBy(
+                        Person::getAge,
+                        Collectors.mapping(Person::getName, Collectors.joining(", "))
+                ));
+        System.out.println("\nJoined names by age: " + joinedNamesByAge);
 
         // Intermediate
 
