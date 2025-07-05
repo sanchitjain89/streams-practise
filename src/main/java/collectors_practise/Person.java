@@ -1,4 +1,4 @@
-package Collectors;
+package collectors_practise;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,9 +7,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @ToString
-class Employee {
+class Person {
     private String name;
-    private String department;
-    private double salary;
     private int age;
+    private String city;
 }

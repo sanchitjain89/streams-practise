@@ -1,4 +1,4 @@
-package Collectors;
+package collectors_practise;
 
 import lombok.Getter;
 
